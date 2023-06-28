@@ -9,7 +9,7 @@ const client = new Client({
 });
 
 client.connect();
-
+// to execute a query inside my db
 exports.query = async (query, values) => {
   const { rows } = await client.query(query, values);
   return rows;

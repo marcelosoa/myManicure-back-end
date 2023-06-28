@@ -1,18 +1,54 @@
-const { uuid } = require('uuidv4');
-
-const register = [
-  {
-    id: uuid(),
-    name: 'Marcelo',
-    email: 'marcelosoaresinc@gmail.com',
-    password: '123456',
-    confirmPassword: '123456',
-  },
-];
+/* eslint-disable camelcase */
+const db = require('../../database/index');
 
 class RegisterRepository {
-  findAll() {
-    return register;
+  async create({
+    name, email, password, confirmPassword, category_id,
+  }) {
+    const [row] = await db.query(`INSERT INTO users(name, email, password, confirmPassword, categoryId)
+      VALUES($1, $2, $3, $4)
+      RETURNING *
+      `, [name, email, password, confirmPassword, category_id]);
+    return row;
+  }
+
+  async findAll(orderBy = 'ASC') {
+    const direction = orderBy.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+    const rows = await db.query();
+  }
+
+  async findById(id) {
+    const [rows] = await db.query(`
+    SELECT users.*, categories.name AS category_name
+    FROM users
+    LEFT JOIN categories ON categories.id = contacts.category_id
+    WHERE users.id = $1`, [id]);
+    return rows;
+  }
+
+  async findByEmail(email) {
+    const [row] = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+    return row;
+  }
+
+  async delete(id) {
+    const deleteOp = await db.query('DELETE FROM users WHERE id = $1', [id]);
+    return deleteOp;
+  }
+
+  // update user
+  async update(id, {
+    name, email, phone, category_id,
+  }) {
+    const [row] = await db.query(`
+    UPDATE users
+    SET name = $1,
+    email = $2,
+    phone = $3,
+    category_id = $4
+    WHERE id = $5
+    `, [name, email, phone, category_id, id]);
+    return row;
   }
 }
 
