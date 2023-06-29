@@ -35,11 +35,11 @@ class RegisterController {
       return response.status(400).json({ error: 'This email already been taken' });
     }
 
-    const users = await RegisterRepository.create({
+    const register = await RegisterRepository.create({
       name, email, password, confirmPassword, category_id,
     });
 
-    response.json(users);
+    response.json(register);
   }
 
   // update an old register
