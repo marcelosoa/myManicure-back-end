@@ -1,4 +1,4 @@
-CREATE DATABASE mymanicure;
+CREATE DATABASE mymanicurev1;
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
@@ -12,6 +12,8 @@ CREATE TABLE IF NOT EXISTS users (
   name VARCHAR NOT NULL,
   email VARCHAR UNIQUE,
   password VARCHAR NOT NULL,
-  confirmPassword VARCHAR NOT NULL
+  confirmPassword VARCHAR NOT NULL,
+  category_id UUID,
+  FOREIGN KEY(category_id) REFERENCES categories(id)
 );
 

@@ -5,7 +5,7 @@ const client = new Client({
   port: 5432,
   user: 'root',
   password: 'root',
-  database: 'mymanicure',
+  database: 'mymanicurev1',
 });
 
 client.connect();

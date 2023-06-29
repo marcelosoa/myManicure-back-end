@@ -20,25 +20,26 @@ class RegisterController {
 
   // create a new register
   async store(request, response) {
+    // criar um registro
     const {
-      name, email, password, confirmPassword,
+      name, email, password, confirmPassword, category_id,
     } = request.body;
 
     if (!name) {
       return response.status(400).json({ error: 'Name is required' });
     }
 
-    const registerExists = await RegisterRepository.findByEmail(email);
+    const userExist = await RegisterRepository.findByEmail(email);
 
-    if (registerExists) {
+    if (userExist) {
       return response.status(400).json({ error: 'This email already been taken' });
     }
 
-    const user = await RegisterRepository.create({
-      name, email, password, confirmPassword,
+    const users = await RegisterRepository.create({
+      name, email, password, confirmPassword, category_id,
     });
 
-    response.json(user);
+    response.json(users);
   }
 
   // update an old register
